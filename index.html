@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reconoce el phishing</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f4f3ef;
+    color: #26251f;
+    margin: 0;
+    padding: 0 0 60px;
+  }
+  .hero {
+    background: linear-gradient(135deg, #7a2c14 0%, #993c1d 55%, #b8532a 100%);
+    color: #ffffff;
+    padding: 44px 20px 56px;
+    text-align: center;
+  }
+  .hero-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+  }
+  .hero h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: -0.3px;
+  }
+  .hero p {
+    font-size: 15px;
+    margin: 0;
+    color: rgba(255,255,255,0.85);
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .wrap {
+    max-width: 640px;
+    margin: -22px auto 0;
+    padding: 0 16px;
+  }
+  .panel {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 8px 28px rgba(50,40,25,0.10), 0 1px 3px rgba(50,40,25,0.06);
+    padding: 40px 22px 28px;
+  }
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #a3855a;
+    margin: 0 0 4px;
+  }
+  .section-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: #26251f;
+    margin: 0 0 6px;
+  }
+  .section-hint {
+    font-size: 14px;
+    color: #726f65;
+    margin: 0 0 18px;
+  }
+  .card {
+    border: 1px solid #eae7de;
+    border-radius: 14px;
+    background: #fdfcfa;
+    overflow: hidden;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: box-shadow 0.18s, border-color 0.18s;
+  }
+  .card:hover {
+    box-shadow: 0 4px 14px rgba(50,40,25,0.08);
+    border-color: #e0dbcc;
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 16px;
+  }
+  .icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .icon-circle svg { width: 20px; height: 20px; }
+  .card-title { font-size: 15.5px; font-weight: 600; margin: 0; color: #26251f; }
+  .card-subtitle { font-size: 13px; color: #726f65; margin: 2px 0 0; }
+  .chevron {
+    margin-left: auto;
+    color: #b0aa98;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    display: flex;
+  }
+  .chevron.open { transform: rotate(180deg); }
+  .detail { max-height: 0; overflow: hidden; transition: max-height 0.25s ease; }
+  .detail-inner {
+    padding: 0 16px 16px 70px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #4a473e;
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid #eae7de;
+    margin: 30px 0 22px;
+  }
+  .checklist-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 15px;
+    border: 1px solid #eae7de;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    background: #fdfcfa;
+    transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+  }
+  .checkbox {
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    border: 2px solid #c7c2b3;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .checkbox svg { width: 13px; height: 13px; opacity: 0; transition: opacity 0.15s; }
+  .checkbox.checked { background: #2f6b4f; border-color: #2f6b4f; }
+  .checkbox.checked svg { opacity: 1; }
+  .checklist-row.done { opacity: 0.55; background: #f6f5f1; }
+  .checklist-text { font-size: 14.5px; }
+  .progress-wrap { margin-top: 18px; }
+  .progress-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .progress-label { font-size: 13.5px; color: #726f65; font-weight: 500; }
+  .progress-value { font-size: 13.5px; font-weight: 700; color: #2f6b4f; }
+  .progress-track {
+    height: 8px;
+    background: #eeece5;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #2f6b4f;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+  .footer-note {
+    margin-top: 26px;
+    font-size: 13px;
+    color: #8a8678;
+    text-align: center;
+    padding: 14px 16px;
+    background: #f6f5f1;
+    border-radius: 12px;
+  }
+  .footer-note strong { color: #4a473e; }
+  .page-footer {
+    text-align: center;
+    font-size: 12px;
+    color: #a3a094;
+    margin-top: 20px;
+  }
+  .close-btn {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .close-btn:hover { background: rgba(255,255,255,0.28); }
+  .close-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(80px);
+    background: #26251f;
+    color: #fff;
+    font-size: 13.5px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .close-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="hero" style="position: relative;">
+  <div class="close-btn" id="closeBtn" title="Cerrar">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </div>
+  <svg class="hero-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 2 L20 6 V11 C20 16 16.5 20 12 22 C7.5 20 4 16 4 11 V6 Z"/>
+    <path d="M9 12 L11 14 L15.5 9.5"/>
+  </svg>
+  <h1>¿Cómo reconocer un phishing?</h1>
+  <p>Una guía rápida para identificar correos y mensajes fraudulentos antes de que causen un problema</p>
+</div>
+<div class="close-toast" id="closeToast">Cierra esta pestaña con Ctrl+W (o Cmd+W en Mac)</div>
+
+<div class="wrap">
+  <div class="panel">
+    <p class="section-label">Paso 1</p>
+    <p class="section-title">Señales de alerta</p>
+    <p class="section-hint">Toca cada tarjeta para ver un ejemplo real</p>
+    <div id="cards"></div>
+
+    <hr class="divider">
+
+    <p class="section-label">Paso 2</p>
+    <p class="section-title">Autoevaluación rápida</p>
+    <p class="section-hint">Marca las reglas que ya conocías y aplicas</p>
+    <div id="checklist"></div>
+
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label">Reglas marcadas</span>
+        <span class="progress-value"><span id="count">0</span> / 6</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="footer-note">
+      <strong>¿Algo sospechoso o dudoso?</strong> Repórtalo antes de abrirlo o actuar.
+    </div>
+  </div>
+  <p class="page-footer">Comunicado de seguridad informática · Uso interno</p>
+</div>
+
+<script>
+const icons = {
+  at: '<path d="M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm0 0v1.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-3.5 7.13"/>',
+  alarm: '<path d="M12 8v5l3 2"/><circle cx="12" cy="13" r="8"/><path d="M5 3 2 6"/><path d="M19 3l3 3"/>',
+  key: '<circle cx="8" cy="15" r="4"/><path d="M10.5 12.5 20 3"/><path d="M17 6l3 3"/><path d="M14 9l2.5 2.5"/>',
+  edit: '<path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3Z"/><path d="M13.5 6.5l3 3"/>',
+  clip: '<path d="M10 6h6a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h1"/><rect x="9" y="3" width="6" height="4" rx="1"/>',
+  gift: '<rect x="3" y="9" width="18" height="12" rx="1"/><path d="M3 13h18"/><path d="M12 9v12"/><path d="M12 9c-1.5-4-6-4-6-1s3 1 6 1Z"/><path d="M12 9c1.5-4 6-4 6-1s-3 1-6 1Z"/>'
+};
+
+const colorSets = [
+  { bg: "#faeeda", fg: "#8a5a12" },
+  { bg: "#fbe3df", fg: "#a3401f" },
+  { bg: "#e6f1fb", fg: "#1c5a92" },
+  { bg: "#f0e6fa", fg: "#6b3fa0" },
+  { bg: "#faeeda", fg: "#8a5a12" },
+  { bg: "#e9f2df", fg: "#3b6d11" }
+];
+
+const signals = [
+  { icon: icons.at, title: "Remitente raro", subtitle: "Correo parecido pero no exacto", example: "juan.perez@empresa-mx.com en vez de juan.perez@empresa.com. Un carácter cambia y parece igual a simple vista." },
+  { icon: icons.alarm, title: "Urgencia forzada", subtitle: "Te presiona a actuar ya", example: "\"Tu cuenta será bloqueada en 2 horas\" o \"pago pendiente, urgente\". El miedo hace que actúes sin pensar." },
+  { icon: icons.key, title: "Pide datos sensibles", subtitle: "Contraseñas o códigos", example: "Ningún banco o sistema interno te pedirá tu contraseña o el código que te llega por SMS." },
+  { icon: icons.edit, title: "Errores raros", subtitle: "Ortografía o tono distinto", example: "Frases mal traducidas, acentos faltantes, o un tono muy formal que tu compañero nunca usaría." },
+  { icon: icons.clip, title: "Adjunto inesperado", subtitle: "Archivo o enlace no pedido", example: "Un PDF de \"factura\" o \"aviso legal\" que no esperabas recibir, de alguien que no te suele escribir." },
+  { icon: icons.gift, title: "Demasiado bueno", subtitle: "Premios u ofertas falsas", example: "\"Ganaste una tablet\" o \"reembolso disponible\": si no participaste en nada, no ganaste nada." }
+];
+
+const svgWrap = (paths, color) => `<svg viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
+
+const cardsEl = document.getElementById('cards');
+signals.forEach((s, i) => {
+  const c = colorSets[i % colorSets.length];
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-head">
+      <div class="icon-circle" style="background:${c.bg}">${svgWrap(s.icon, c.fg)}</div>
+      <div>
+        <p class="card-title">${s.title}</p>
+        <p class="card-subtitle">${s.subtitle}</p>
+      </div>
+      <span class="chevron">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </span>
+    </div>
+    <div class="detail"><div class="detail-inner">${s.example}</div></div>
+  `;
+  const chevron = card.querySelector('.chevron');
+  const detail = card.querySelector('.detail');
+  const inner = card.querySelector('.detail-inner');
+  card.addEventListener('click', () => {
+    const isOpen = detail.style.maxHeight && detail.style.maxHeight !== '0px';
+    detail.style.maxHeight = isOpen ? '0px' : (inner.scrollHeight + 20) + 'px';
+    chevron.classList.toggle('open', !isOpen);
+  });
+  cardsEl.appendChild(card);
+});
+
+const rules = [
+  "No abro correos de remitentes que no conozco",
+  "No doy contraseñas ni códigos por correo o teléfono",
+  "No conecto USB desconocidas a mi equipo",
+  "No instalo apps sin autorización",
+  "Verifico antes de hacer clic en un enlace",
+  "Reporto a TI si algo se ve sospechoso"
+];
+const checklistEl = document.getElementById('checklist');
+const countEl = document.getElementById('count');
+const fillEl = document.getElementById('progressFill');
+let checked = 0;
+
+rules.forEach((r) => {
+  const row = document.createElement('div');
+  row.className = 'checklist-row';
+  row.innerHTML = `
+    <div class="checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+    <span class="checklist-text">${r}</span>
+  `;
+  const box = row.querySelector('.checkbox');
+  let done = false;
+  row.addEventListener('click', () => {
+    done = !done;
+    box.classList.toggle('checked', done);
+    row.classList.toggle('done', done);
+    checked += done ? 1 : -1;
+    countEl.textContent = checked;
+    fillEl.style.width = Math.round((checked/6)*100) + '%';
+  });
+  checklistEl.appendChild(row);
+});
+
+const closeBtn = document.getElementById('closeBtn');
+const closeToast = document.getElementById('closeToast');
+closeBtn.addEventListener('click', () => {
+  window.close();
+  setTimeout(() => {
+    closeToast.classList.add('show');
+    setTimeout(() => closeToast.classList.remove('show'), 3000);
+  }, 200);
+});
+</script>
+</body>
+</html>
