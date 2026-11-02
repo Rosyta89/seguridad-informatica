@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ciberseguridad en tu PC</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #e8eef7;
+    color: #1b2433;
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px 14px 40px;
+  }
+  .app { max-width: 520px; margin: 0 auto; }
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #1f4fd8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .brand-text small {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #1f4fd8;
+  }
+  .brand-text strong { font-size: 16px; color: #1b2433; }
+  .close-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #d3dbe8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .close-btn:hover { background: #f1f4fa; }
+
+  .progress-bar {
+    height: 6px;
+    background: #cfd8e8;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: #1f4fd8;
+    border-radius: 999px;
+    transition: width 0.35s ease;
+  }
+  .step-label {
+    font-size: 12.5px;
+    color: #5a6780;
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+
+  .slide-card {
+    background: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(31,79,216,0.10), 0 1px 3px rgba(20,30,60,0.06);
+    padding: 26px 22px 24px;
+    animation: slideIn 0.3s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(18px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .slide-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #e6edff;
+    color: #1f4fd8;
+    font-weight: 800;
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .slide-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0 0 6px;
+    letter-spacing: -0.3px;
+    color: #1b2433;
+  }
+  .slide-sub {
+    font-size: 14.5px;
+    color: #5a6780;
+    line-height: 1.55;
+    margin: 0 0 20px;
+  }
+  .box {
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .box-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 6px;
+  }
+  .box p.box-text {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .box-do { background: #e7f5ec; }
+  .box-do .box-label { color: #1f7a45; }
+  .box-do .box-text { color: #15432a; }
+  .box-dont { background: #fdeaea; }
+  .box-dont .box-label { color: #b3261e; }
+  .box-dont .box-text { color: #5c1511; }
+  .example {
+    margin-top: 6px;
+    font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+    font-size: 13px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    padding: 7px 10px;
+    display: inline-block;
+    word-break: break-word;
+  }
+
+  .summary-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #edf0f6;
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+  .summary-item:last-of-type { border-bottom: none; }
+  .summary-item svg { flex-shrink: 0; margin-top: 2px; }
+  .report-box {
+    margin-top: 16px;
+    background: #fff4e0;
+    border: 1px solid #f3d9a4;
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #5c3d06;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .btn {
+    border: none;
+    border-radius: 12px;
+    padding: 13px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.1s, background 0.15s, opacity 0.15s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-prev { background: #ffffff; color: #1f4fd8; border: 1px solid #c6d3ee; }
+  .btn-prev:disabled { opacity: 0.4; cursor: default; }
+  .btn-next { background: #1f4fd8; color: #ffffff; flex: 1; }
+  .btn-next:hover { background: #1a43b8; }
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 16px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #c3cde1;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .dot.active { background: #1f4fd8; width: 22px; border-radius: 999px; }
+
+  .page-footer {
+    text-align: center;
+    font-size: 11.5px;
+    color: #8592aa;
+    margin-top: 22px;
+    letter-spacing: 0.03em;
+  }
+  .close-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(80px);
+    background: #1b2433;
+    color: #fff;
+    font-size: 13px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    max-width: 92vw;
+    text-align: center;
+  }
+  .close-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="M9 10l2 2 4-4"/></svg>
+      </div>
+      <div class="brand-text">
+        <small>Guía interactiva</small>
+        <strong>Ciberseguridad en tu PC</strong>
+      </div>
+    </div>
+    <div class="close-btn" id="closeBtn" title="Cerrar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1b2433" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <p class="step-label" id="stepLabel"></p>
+
+  <div id="slideHost"></div>
+
+  <div class="nav">
+    <button class="btn btn-prev" id="prevBtn">Anterior</button>
+    <button class="btn btn-next" id="nextBtn">Siguiente</button>
+  </div>
+  <div class="dots" id="dots"></div>
+
+  <p class="page-footer">COMUNICADO DE SEGURIDAD INFORMÁTICA · USO INTERNO</p>
+</div>
+<div class="close-toast" id="closeToast">Cierra esta pestaña con Ctrl+W (o Cmd+W en Mac)</div>
+
+<script>
+const checkIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>';
+const crossIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+const slides = [
+  {
+    title: "No dejes tu contraseña a la vista",
+    sub: "Tu contraseña la administra TI y es personal. Si alguien la ve, puede entrar como si fueras tú.",
+    doTxt: "Memorízala. Si necesitas recordarla, guárdala donde nadie más pueda verla.",
+    dontTxt: "No la pegues en el monitor, ni la dejes debajo del teclado, en una libreta sobre tu escritorio o en un papel en el cajón sin llave.",
+    dontExample: "Post-it en la pantalla"
+  },
+  {
+    title: "Bloquea tu PC cuando te alejes",
+    sub: "Una PC desbloqueada es una puerta abierta, aunque te ausentes solo un minuto.",
+    doTxt: "Bloquea la pantalla cada vez que te levantes. En Windows es muy rápido:",
+    example: "Tecla Windows + L",
+    dontTxt: "No dejes tu sesión abierta al ir por un café, a una junta o a comer."
+  },
+  {
+    title: "Tu usuario es solo tuyo",
+    sub: "Todo lo que se haga con tu usuario queda registrado a tu nombre.",
+    doTxt: "Si necesitas un acceso o que te restablezcan la contraseña, pídelo directamente a TI.",
+    dontTxt: "No prestes tu usuario ni tu sesión a compañeros, y no mandes tu contraseña por correo, WhatsApp o mensaje."
+  },
+  {
+    title: "Cuidado con los archivos adjuntos",
+    sub: "Muchos virus llegan escondidos en un archivo adjunto que parece normal.",
+    doTxt: "Abre solo adjuntos que esperabas y que vienen de alguien que conoces. Si dudas, pregúntale por otro medio.",
+    dontTxt: "No abras adjuntos inesperados, sobre todo facturas, avisos urgentes o archivos comprimidos o ejecutables.",
+    dontExample: ".exe · .zip · .docm · .js"
+  },
+  {
+    title: "Enlaces sospechosos: piensa antes del clic",
+    sub: "Un enlace puede verse legítimo y llevarte a una página falsa o descargar un virus.",
+    doTxt: "Pasa el cursor sobre el enlace (sin dar clic) para ver a dónde va realmente. Ante la duda, entra escribiendo tú la dirección oficial.",
+    dontTxt: "No des clic en enlaces de correos o mensajes que no esperabas, ni escribas tu usuario y contraseña en páginas a las que llegaste por un enlace."
+  },
+  {
+    title: "Correos que presionan o piden datos",
+    sub: "Los estafadores se hacen pasar por un jefe, un banco o un proveedor para que actúes sin pensar.",
+    doTxt: "Revisa bien el correo del remitente y confirma por llamada o en persona cualquier solicitud urgente de pagos o datos.",
+    dontTxt: "No respondas ni des datos, claves o códigos solo porque el mensaje dice que es urgente o que viene de alguien importante."
+  },
+  {
+    title: "Descargas y programas",
+    sub: "Instalar programas por tu cuenta es una de las formas más comunes de infectar un equipo.",
+    doTxt: "Si necesitas un programa, solicítalo a TI para que lo revise e instale.",
+    dontTxt: "No descargues ni instales programas, juegos, extensiones o versiones piratas. Y si sale una ventana diciendo que tu equipo tiene virus, ciérrala y avisa.",
+    dontExample: "\"Tu equipo tiene 5 virus, da clic aquí\""
+  },
+  {
+    title: "USB y dispositivos externos",
+    sub: "Una memoria USB desconocida puede infectar tu PC en cuanto la conectas.",
+    doTxt: "Usa solo memorias y discos que sepas de dónde vienen. Si encuentras una USB tirada, entrégala a TI.",
+    dontTxt: "No conectes USB, discos ni cables desconocidos, ni conectes tu celular personal a la PC del trabajo sin permiso."
+  },
+  {
+    title: "Si tu PC se comporta raro",
+    sub: "Lentitud extrema, ventanas que no pediste, archivos que no abren o el antivirus apagado pueden ser señal de infección.",
+    doTxt: "Desconecta el cable de red o el Wi-Fi y avisa a TI de inmediato.",
+    dontTxt: "No sigas trabajando como si nada, no intentes arreglarlo por tu cuenta y no esperes a que \"se le pase\"."
+  }
+];
+
+const total = slides.length + 1; // +1 resumen
+let current = 0;
+
+const host = document.getElementById('slideHost');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const fill = document.getElementById('progressFill');
+const stepLabel = document.getElementById('stepLabel');
+const dotsEl = document.getElementById('dots');
+
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot';
+  d.addEventListener('click', () => { current = i; render(); });
+  dotsEl.appendChild(d);
+}
+
+function slideHTML(s, i) {
+  return `
+    <div class="slide-card">
+      <div class="slide-num">${i + 1}</div>
+      <h2 class="slide-title">${s.title}</h2>
+      <p class="slide-sub">${s.sub}</p>
+      <div class="box box-do">
+        <p class="box-label">${checkIcon} Haz esto</p>
+        <p class="box-text">${s.doTxt}</p>
+        ${s.example ? `<span class="example">${s.example}</span>` : ''}
+      </div>
+      <div class="box box-dont">
+        <p class="box-label">${crossIcon} Evita esto</p>
+        <p class="box-text">${s.dontTxt}</p>
+        ${s.dontExample ? `<span class="example">${s.dontExample}</span>` : ''}
+      </div>
+    </div>`;
+}
+
+function summaryHTML() {
+  const okIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1f7a45" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg>';
+  const items = [
+    "Contraseña nunca a la vista ni compartida",
+    "PC bloqueada cada vez que te alejas",
+    "Adjuntos y enlaces: verificar antes de abrir",
+    "Cero programas ni USB sin autorización",
+    "Ante cualquier duda, avisar a TI de inmediato"
+  ];
+  return `
+    <div class="slide-card">
+      <div class="slide-num">&#10003;</div>
+      <h2 class="slide-title">Resumen rápido</h2>
+      <p class="slide-sub">Lo esencial para proteger tu PC, tu cuenta y la información de la empresa.</p>
+      ${items.map(t => `<div class="summary-item">${okIcon}<span>${t}</span></div>`).join('')}
+      <div class="report-box"><strong>¿Algo raro en un correo, un enlace o tu PC?</strong> No lo abras ni sigas adelante: repórtalo a TI de inmediato. Nadie se mete en problemas por avisar a tiempo.</div>
+    </div>`;
+}
+
+function render() {
+  host.innerHTML = current < slides.length ? slideHTML(slides[current], current) : summaryHTML();
+  fill.style.width = Math.round(((current + 1) / total) * 100) + '%';
+  stepLabel.textContent = current < slides.length ? `Paso ${current + 1} de ${slides.length}` : 'Resumen final';
+  prevBtn.disabled = current === 0;
+  nextBtn.textContent = current === total - 1 ? 'Volver al inicio' : 'Siguiente';
+  [...dotsEl.children].forEach((d, i) => d.classList.toggle('active', i === current));
+}
+
+prevBtn.addEventListener('click', () => { if (current > 0) { current--; render(); } });
+nextBtn.addEventListener('click', () => { current = current === total - 1 ? 0 : current + 1; render(); });
+
+let touchX = null;
+document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (touchX === null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 60) {
+    if (dx < 0 && current < total - 1) { current++; render(); }
+    if (dx > 0 && current > 0) { current--; render(); }
+  }
+  touchX = null;
+}, { passive: true });
+
+render();
+
+const closeBtn = document.getElementById('closeBtn');
+const closeToast = document.getElementById('closeToast');
+closeBtn.addEventListener('click', () => {
+  window.close();
+  setTimeout(() => {
+    closeToast.classList.add('show');
+    setTimeout(() => closeToast.classList.remove('show'), 3000);
+  }, 200);
+});
+
+fetch('https://api.counterapi.dev/v1/comunicados-seguridad-empresa/ciberseguridad-pc-guia/up').catch(() => {});
+</script>
+</body>
+</html>
