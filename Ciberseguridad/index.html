@@ -1,434 +1,251 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ciberseguridad en tu PC</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guía rápida contra virus y fraudes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <style>
-  * { box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    background: #e8eef7;
-    color: #1b2433;
-    margin: 0;
-    min-height: 100vh;
-    padding: 20px 14px 40px;
-  }
-  .app { max-width: 520px; margin: 0 auto; }
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .brand-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: #1f4fd8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .brand-text small {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: #1f4fd8;
-  }
-  .brand-text strong { font-size: 16px; color: #1b2433; }
-  .close-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #ffffff;
-    border: 1px solid #d3dbe8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .close-btn:hover { background: #f1f4fa; }
+:root{--bg:#F1F3FA;--surface:#fff;--ink:#17163F;--muted:#505374;--line:#D9DCEE;--accent:#5B3FD6;--coral:#E8590C;--bad:#C2255C;--badbg:#FDE8F0;--good:#0B7A55;--goodbg:#DFF5EC;--warnbg:#FFF1E6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E0D2A;--surface:#1A1946;--ink:#EEF0FF;--muted:#B0B3D6;--line:#33326B;--accent:#9D86FF;--coral:#FF8A4C;--bad:#FF7FA8;--badbg:#3D1530;--good:#5FE0B0;--goodbg:#10382B;--warnbg:#3A2314}}
+:root[data-theme="dark"]{--bg:#0E0D2A;--surface:#1A1946;--ink:#EEF0FF;--muted:#B0B3D6;--line:#33326B;--accent:#9D86FF;--coral:#FF8A4C;--bad:#FF7FA8;--badbg:#3D1530;--good:#5FE0B0;--goodbg:#10382B;--warnbg:#3A2314}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:1.0625rem/1.6 "Atkinson Hyperlegible",system-ui,"Segoe UI",sans-serif}
+h1,h2,h3,h4{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;line-height:1.12;margin:0}
+p{margin:.4rem 0}
+:focus-visible{outline:3px solid var(--coral);outline-offset:2px;border-radius:4px}
+.wrap{max-width:920px;margin:0 auto;padding:0 1.25rem}
 
-  .progress-bar {
-    height: 6px;
-    background: #cfd8e8;
-    border-radius: 999px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    width: 0%;
-    background: #1f4fd8;
-    border-radius: 999px;
-    transition: width 0.35s ease;
-  }
-  .step-label {
-    font-size: 12.5px;
-    color: #5a6780;
-    margin: 0 0 14px;
-    font-weight: 600;
-  }
+.hero{background:radial-gradient(circle at 88% 15%,#6D4BFF 0,transparent 42%),radial-gradient(circle at 0% 100%,rgba(232,89,12,.55),transparent 38%),#17163F;color:#fff;padding:calc(3.2rem + env(safe-area-inset-top,0px)) 0 7rem;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center}
+.hero h1{font-size:clamp(2.3rem,7vw,4.2rem);font-weight:800;letter-spacing:-.025em}
+.hero p{font-size:1.2rem;max-width:34em;color:#DCDDF5;margin-top:1.1rem}
+.badge{display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:.25rem .9rem;font-size:.95rem;margin-bottom:1.2rem}
+.shield{position:relative;width:190px;height:190px;display:grid;place-items:center}
+.shield svg{width:130px;height:auto;position:relative;z-index:1;filter:drop-shadow(0 10px 24px rgba(0,0,0,.35))}
+.shield i{position:absolute;inset:0;border:2px solid rgba(255,255,255,.5);border-radius:50%;animation:pulso 3.2s ease-out infinite}
+.shield i:nth-child(2){animation-delay:1.6s}
+@keyframes pulso{from{transform:scale(.55);opacity:.9}to{transform:scale(1.15);opacity:0}}
+@media (max-width:680px){.hero .wrap{grid-template-columns:1fr}.shield{display:none}}
 
-  .slide-card {
-    background: #ffffff;
-    border-radius: 22px;
-    box-shadow: 0 10px 30px rgba(31,79,216,0.10), 0 1px 3px rgba(20,30,60,0.06);
-    padding: 26px 22px 24px;
-    animation: slideIn 0.3s ease;
-  }
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(18px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  .slide-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    background: #e6edff;
-    color: #1f4fd8;
-    font-weight: 800;
-    font-size: 16px;
-    margin-bottom: 12px;
-  }
-  .slide-title {
-    font-size: 22px;
-    font-weight: 800;
-    margin: 0 0 6px;
-    letter-spacing: -0.3px;
-    color: #1b2433;
-  }
-  .slide-sub {
-    font-size: 14.5px;
-    color: #5a6780;
-    line-height: 1.55;
-    margin: 0 0 20px;
-  }
-  .box {
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-  }
-  .box-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin: 0 0 6px;
-  }
-  .box p.box-text {
-    margin: 0;
-    font-size: 14.5px;
-    line-height: 1.55;
-  }
-  .box-do { background: #e7f5ec; }
-  .box-do .box-label { color: #1f7a45; }
-  .box-do .box-text { color: #15432a; }
-  .box-dont { background: #fdeaea; }
-  .box-dont .box-label { color: #b3261e; }
-  .box-dont .box-text { color: #5c1511; }
-  .example {
-    margin-top: 6px;
-    font-family: "SFMono-Regular", Consolas, Menlo, monospace;
-    font-size: 13px;
-    background: rgba(255,255,255,0.7);
-    border-radius: 8px;
-    padding: 7px 10px;
-    display: inline-block;
-    word-break: break-word;
-  }
+.panel{margin-top:-4.5rem;position:relative;background:var(--surface);border-radius:18px;padding:1.6rem;box-shadow:0 18px 40px -18px rgba(23,22,63,.45);border:1px solid var(--line)}
+.panel h2{font-size:1.5rem;font-weight:800}
+.panel h2 span{color:var(--coral)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.1rem 0 0;padding:0;list-style:none}
+.steps li{background:var(--warnbg);border-radius:12px;padding:1rem 1.1rem}
+.steps .n{display:grid;place-items:center;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--coral);color:#fff;font:800 1.2rem "Bricolage Grotesque",sans-serif;margin-bottom:.5rem}
+.steps b{display:block;font-size:1.08rem}
+.steps small{color:var(--muted);font-size:.97rem}
+.note{margin:1rem 0 0;color:var(--muted);font-size:.98rem}
 
-  .summary-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid #edf0f6;
-    font-size: 14.5px;
-    line-height: 1.5;
-  }
-  .summary-item:last-of-type { border-bottom: none; }
-  .summary-item svg { flex-shrink: 0; margin-top: 2px; }
-  .report-box {
-    margin-top: 16px;
-    background: #fff4e0;
-    border: 1px solid #f3d9a4;
-    border-radius: 14px;
-    padding: 14px 16px;
-    font-size: 14px;
-    line-height: 1.55;
-    color: #5c3d06;
-  }
+section{margin-top:4rem}
+h2.t{font-size:clamp(1.65rem,4.4vw,2.3rem);font-weight:800;letter-spacing:-.015em}
+h2.t::after{content:"";display:block;width:3.2rem;height:.3rem;border-radius:9px;background:linear-gradient(90deg,var(--accent),var(--coral));margin-top:.55rem}
+.sub{color:var(--muted);margin:.8rem 0 1.4rem;max-width:42em}
 
-  .nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 18px;
-  }
-  .btn {
-    border: none;
-    border-radius: 12px;
-    padding: 13px 20px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: inherit;
-    transition: transform 0.1s, background 0.15s, opacity 0.15s;
-  }
-  .btn:active { transform: scale(0.97); }
-  .btn-prev { background: #ffffff; color: #1f4fd8; border: 1px solid #c6d3ee; }
-  .btn-prev:disabled { opacity: 0.4; cursor: default; }
-  .btn-next { background: #1f4fd8; color: #ffffff; flex: 1; }
-  .btn-next:hover { background: #1a43b8; }
-  .dots {
-    display: flex;
-    justify-content: center;
-    gap: 7px;
-    margin-top: 16px;
-  }
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #c3cde1;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .dot.active { background: #1f4fd8; width: 22px; border-radius: 999px; }
+details{--c:var(--accent);background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:14px;margin-bottom:.8rem;transition:box-shadow .2s}
+details[open]{box-shadow:0 12px 28px -16px rgba(23,22,63,.4)}
+summary{list-style:none;cursor:pointer;display:flex;gap:1rem;align-items:center;padding:1rem 3rem 1rem 1rem;position:relative;min-height:56px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";position:absolute;right:1.3rem;top:50%;width:.6rem;height:.6rem;margin-top:-.45rem;border-right:2.5px solid var(--muted);border-bottom:2.5px solid var(--muted);transform:rotate(45deg);transition:transform .2s}
+details[open] summary::after{transform:rotate(-135deg);margin-top:-.2rem}
+.ico{flex:none;display:grid;place-items:center;width:3.2rem;height:3.2rem;border-radius:14px;font-size:1.7rem;background:color-mix(in srgb,var(--c) 18%,var(--surface))}
+summary h3{font-size:1.15rem;font-weight:800}
+summary .d{display:block;color:var(--muted);font-size:.98rem;margin-top:.2rem}
+.risk{display:inline-block;font-size:.8rem;font-weight:700;color:#fff;background:var(--c);border-radius:99px;padding:0 .6rem;margin-left:.5rem;vertical-align:.12em;font-family:"Atkinson Hyperlegible",sans-serif}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;padding:0 1rem 1.1rem}
+.cols>div{border-radius:10px;padding:.9rem 1rem}
+.cols>div:first-child{background:color-mix(in srgb,var(--c) 10%,var(--surface))}
+.cols>div:last-child{background:var(--goodbg)}
+.cols h4{margin:0 0 .35rem;font-size:1.02rem}
+.cols ul{margin:0;padding-left:1.2rem}
+.cols li{margin:.28rem 0}
 
-  .page-footer {
-    text-align: center;
-    font-size: 11.5px;
-    color: #8592aa;
-    margin-top: 22px;
-    letter-spacing: 0.03em;
-  }
-  .close-toast {
-    position: fixed;
-    left: 50%;
-    bottom: 24px;
-    transform: translateX(-50%) translateY(80px);
-    background: #1b2433;
-    color: #fff;
-    font-size: 13px;
-    padding: 12px 18px;
-    border-radius: 10px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-    opacity: 0;
-    transition: opacity 0.2s, transform 0.2s;
-    pointer-events: none;
-    max-width: 92vw;
-    text-align: center;
-  }
-  .close-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.checks{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.3rem}
+.checks .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));column-gap:1.5rem}
+.checks label{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;cursor:pointer}
+.checks input{width:1.35rem;height:1.35rem;margin-top:.12rem;accent-color:var(--accent);flex:none}
+#veredicto{margin-top:.9rem;padding:.9rem 1.1rem;border-radius:12px;background:var(--bg);font-weight:700}
+#veredicto.act{background:var(--badbg);color:var(--bad)}
+
+.quiz{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:1.5rem;box-shadow:0 18px 40px -22px rgba(91,63,214,.55)}
+.dots{display:flex;gap:.4rem;margin-bottom:1rem}
+.dots i{flex:1;height:.4rem;border-radius:9px;background:var(--line)}
+.dots i.on{background:var(--accent)}
+.prog{color:var(--muted);font-size:.95rem;margin:0 0 .5rem}
+.msg{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:.4rem 0 1.2rem}
+.msg .meta{background:var(--bg);padding:.6rem 1rem;font-size:.95rem;color:var(--muted);border-bottom:1px solid var(--line)}
+.msg .meta b{color:var(--ink)}
+.msg .body{padding:1rem;font-size:1.08rem}
+.btns{display:flex;flex-wrap:wrap;gap:.7rem}
+button{font:inherit;font-weight:700;min-height:50px;padding:.6rem 1.4rem;border-radius:12px;border:0;color:#fff;cursor:pointer;transition:transform .12s}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.45;cursor:default}
+.b-bad{background:#C2255C}.b-good{background:#0B7A55}.b-next{background:var(--accent)}
+.fb{margin-top:1rem;padding:1rem 1.1rem;border-radius:12px}
+.fb.ok{background:var(--goodbg);color:var(--good)}
+.fb.ko{background:var(--badbg);color:var(--bad)}
+.fb p{color:var(--ink)}
+.fb strong{display:block;font-size:1.05rem}
+.end{text-align:center;padding:1rem 0}
+.end .big{font:800 3.4rem "Bricolage Grotesque",sans-serif;color:var(--accent);line-height:1}
+
+.habits{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;padding:0;margin:0;list-style:none}
+.habits li{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.2rem}
+.habits .e{display:grid;place-items:center;width:2.8rem;height:2.8rem;border-radius:12px;font-size:1.5rem;margin-bottom:.6rem;background:color-mix(in srgb,var(--accent) 16%,var(--surface))}
+.habits h3{font-size:1.08rem;font-weight:800;margin-bottom:.2rem}
+.habits p{color:var(--muted);margin:0;font-size:1rem}
+
+.report{margin-top:4rem;background:radial-gradient(circle at 90% 0,#6D4BFF 0,transparent 50%),#17163F;color:#fff;padding:3rem 0 calc(3rem + env(safe-area-inset-bottom,0px));text-align:center}
+.report .e{font-size:2.6rem}
+.report h2{font-size:clamp(1.7rem,5vw,2.6rem);font-weight:800;margin:.4rem auto 0;max-width:18em}
+.report p{max-width:34em;margin:1rem auto 0;font-size:1.15rem;color:#DCDDF5}
+@media (prefers-reduced-motion:reduce){.shield i{animation:none;opacity:.35}summary::after,details,button{transition:none}}
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="topbar">
-    <div class="brand">
-      <div class="brand-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="M9 10l2 2 4-4"/></svg>
-      </div>
-      <div class="brand-text">
-        <small>Guía interactiva</small>
-        <strong>Ciberseguridad en tu PC</strong>
-      </div>
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="badge">Guía de seguridad para todo el equipo</span>
+      <h1>Si algo se ve raro, detente y repórtalo</h1>
+      <p>Aprende a reconocer los virus y fraudes más comunes, qué hacer si te pasa y cómo evitar que te pase. Sin tecnicismos.</p>
     </div>
-    <div class="close-btn" id="closeBtn" title="Cerrar">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1b2433" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    <div class="shield" aria-hidden="true"><i></i><i></i>
+      <svg viewBox="0 0 100 116"><path d="M50 4 94 20v34c0 29-19 49-44 58C25 103 6 83 6 54V20z" fill="#fff"/><path d="M50 14 84 26v28c0 23-14 39-34 47C30 93 16 77 16 54V26z" fill="#5B3FD6"/><path d="m32 56 13 13 24-26" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
   </div>
+</header>
 
-  <div class="progress-bar"><div class="progress-bar-fill" id="progressFill"></div></div>
-  <p class="step-label" id="stepLabel"></p>
-
-  <div id="slideHost"></div>
-
-  <div class="nav">
-    <button class="btn btn-prev" id="prevBtn">Anterior</button>
-    <button class="btn btn-next" id="nextBtn">Siguiente</button>
+<main class="wrap">
+  <div class="panel" role="region" aria-labelledby="urg">
+    <h2 id="urg">¿Crees que tu equipo ya tiene un virus? <span>Haz esto, en este orden</span></h2>
+    <ol class="steps">
+      <li><span class="n">1</span><b>Desconéctalo de internet</b><small>Quita el cable de red o apaga el Wi‑Fi.</small></li>
+      <li><span class="n">2</span><b>No lo arregles ni borres nada</b><small>Toma una foto de la pantalla con tu celular.</small></li>
+      <li><span class="n">3</span><b>Repórtalo por los canales oficiales</b><small>Desde otro dispositivo. Te dirán si apagar el equipo.</small></li>
+    </ol>
+    <p class="note">Si ya escribiste tu contraseña en un sitio dudoso, menciónalo en el reporte: hay que cambiarla cuanto antes.</p>
   </div>
-  <div class="dots" id="dots"></div>
 
-  <p class="page-footer">COMUNICADO DE SEGURIDAD INFORMÁTICA · USO INTERNO</p>
-</div>
-<div class="close-toast" id="closeToast">Cierra esta pestaña con Ctrl+W (o Cmd+W en Mac)</div>
+  <section id="tipos">
+    <h2 class="t">Las amenazas más comunes</h2>
+    <p class="sub">Toca cada una para ver cómo se nota y qué hacer.</p>
+    <div id="lista-tipos"></div>
+  </section>
+
+  <section id="senales">
+    <h2 class="t">¿Tu equipo está raro?</h2>
+    <p class="sub">Marca lo que hayas notado en los últimos días.</p>
+    <div class="checks"><div class="g" id="senales-lista"></div><div id="veredicto" role="status" aria-live="polite">Marca lo que hayas notado.</div></div>
+  </section>
+
+  <section id="quiz">
+    <h2 class="t">Ponte a prueba: ¿sospechoso o legítimo?</h2>
+    <p class="sub">Cinco casos reales. Decide qué harías.</p>
+    <div class="quiz" id="quiz-box"></div>
+  </section>
+
+  <section id="prevencion">
+    <h2 class="t">Cómo evitarlo</h2>
+    <p class="sub">Ocho hábitos que bloquean la mayoría de los ataques.</p>
+    <ul class="habits">
+      <li><span class="e">🔍</span><h3>Verifica antes de hacer clic</h3><p>Revisa quién envía el mensaje y a dónde lleva el enlace. Si dudas, confirma por otro medio.</p></li>
+      <li><span class="e">🔑</span><h3>Una contraseña distinta por cuenta</h3><p>Usa frases largas y nunca las compartas por correo, chat o llamada.</p></li>
+      <li><span class="e">📲</span><h3>Activa la verificación en dos pasos</h3><p>Aunque roben tu contraseña, no podrán entrar sin tu segundo paso.</p></li>
+      <li><span class="e">🔄</span><h3>Actualiza tu equipo</h3><p>Instala las actualizaciones cuando te las ofrezcan: cierran huecos que usan los virus.</p></li>
+      <li><span class="e">📦</span><h3>Instala solo software autorizado</h3><p>Los programas «gratis» o crackeados suelen traer troyanos.</p></li>
+      <li><span class="e">💾</span><h3>Cuidado con memorias USB</h3><p>No conectes una que encontraste o te prestaron sin que sea revisada.</p></li>
+      <li><span class="e">☁️</span><h3>Guarda en los lugares respaldados</h3><p>Si pasa lo peor, tus documentos se recuperan sin pagar nada.</p></li>
+      <li><span class="e">🔒</span><h3>Bloquea la pantalla al irte</h3><p>Windows + L en Windows, Control + Comando + Q en Mac. Toma un segundo.</p></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="report" aria-labelledby="ayuda">
+  <div class="wrap">
+    <div class="e" aria-hidden="true">📣</div>
+    <h2 id="ayuda">Ante la duda, repórtalo</h2>
+    <p>Usa siempre los canales oficiales de la empresa para reportar cualquier incidencia. Entre más rápido se reporta, menos daño hace.</p>
+  </div>
+</footer>
 
 <script>
-const checkIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>';
-const crossIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
-
-const slides = [
-  {
-    title: "No dejes tu contraseña a la vista",
-    sub: "Tu contraseña la administra TI y es personal. Si alguien la ve, puede entrar como si fueras tú.",
-    doTxt: "Memorízala. Si necesitas recordarla, guárdala donde nadie más pueda verla.",
-    dontTxt: "No la pegues en el monitor, ni la dejes debajo del teclado, en una libreta sobre tu escritorio o en un papel en el cajón sin llave.",
-    dontExample: "Post-it en la pantalla"
-  },
-  {
-    title: "Bloquea tu PC cuando te alejes",
-    sub: "Una PC desbloqueada es una puerta abierta, aunque te ausentes solo un minuto.",
-    doTxt: "Bloquea la pantalla cada vez que te levantes. En Windows es muy rápido:",
-    example: "Tecla Windows + L",
-    dontTxt: "No dejes tu sesión abierta al ir por un café, a una junta o a comer."
-  },
-  {
-    title: "Tu usuario es solo tuyo",
-    sub: "Todo lo que se haga con tu usuario queda registrado a tu nombre.",
-    doTxt: "Si necesitas un acceso o que te restablezcan la contraseña, pídelo directamente a TI.",
-    dontTxt: "No prestes tu usuario ni tu sesión a compañeros, y no mandes tu contraseña por correo, WhatsApp o mensaje."
-  },
-  {
-    title: "Cuidado con los archivos adjuntos",
-    sub: "Muchos virus llegan escondidos en un archivo adjunto que parece normal.",
-    doTxt: "Abre solo adjuntos que esperabas y que vienen de alguien que conoces. Si dudas, pregúntale por otro medio.",
-    dontTxt: "No abras adjuntos inesperados, sobre todo facturas, avisos urgentes o archivos comprimidos o ejecutables.",
-    dontExample: ".exe · .zip · .docm · .js"
-  },
-  {
-    title: "Enlaces sospechosos: piensa antes del clic",
-    sub: "Un enlace puede verse legítimo y llevarte a una página falsa o descargar un virus.",
-    doTxt: "Pasa el cursor sobre el enlace (sin dar clic) para ver a dónde va realmente. Ante la duda, entra escribiendo tú la dirección oficial.",
-    dontTxt: "No des clic en enlaces de correos o mensajes que no esperabas, ni escribas tu usuario y contraseña en páginas a las que llegaste por un enlace."
-  },
-  {
-    title: "Correos que presionan o piden datos",
-    sub: "Los estafadores se hacen pasar por un jefe, un banco o un proveedor para que actúes sin pensar.",
-    doTxt: "Revisa bien el correo del remitente y confirma por llamada o en persona cualquier solicitud urgente de pagos o datos.",
-    dontTxt: "No respondas ni des datos, claves o códigos solo porque el mensaje dice que es urgente o que viene de alguien importante."
-  },
-  {
-    title: "Descargas y programas",
-    sub: "Instalar programas por tu cuenta es una de las formas más comunes de infectar un equipo.",
-    doTxt: "Si necesitas un programa, solicítalo a TI para que lo revise e instale.",
-    dontTxt: "No descargues ni instales programas, juegos, extensiones o versiones piratas. Y si sale una ventana diciendo que tu equipo tiene virus, ciérrala y avisa.",
-    dontExample: "\"Tu equipo tiene 5 virus, da clic aquí\""
-  },
-  {
-    title: "USB y dispositivos externos",
-    sub: "Una memoria USB desconocida puede infectar tu PC en cuanto la conectas.",
-    doTxt: "Usa solo memorias y discos que sepas de dónde vienen. Si encuentras una USB tirada, entrégala a TI.",
-    dontTxt: "No conectes USB, discos ni cables desconocidos, ni conectes tu celular personal a la PC del trabajo sin permiso."
-  },
-  {
-    title: "Si tu PC se comporta raro",
-    sub: "Lentitud extrema, ventanas que no pediste, archivos que no abren o el antivirus apagado pueden ser señal de infección.",
-    doTxt: "Desconecta el cable de red o el Wi-Fi y avisa a TI de inmediato.",
-    dontTxt: "No sigas trabajando como si nada, no intentes arreglarlo por tu cuenta y no esperes a que \"se le pase\"."
-  }
+var TIPOS=[
+{i:"🎣",c:"#E8590C",n:"Phishing (correo o mensaje falso)",r:"Riesgo alto",d:"Un mensaje que finge ser alguien de confianza para que des tu contraseña o abras algo.",
+ s:["Urgencia o amenaza: «tu cuenta se cierra hoy»","Remitente con dirección rara o letras cambiadas","El enlace real no coincide con el texto al pasar el cursor","Te pide contraseñas, códigos o datos bancarios"],
+ a:["No hagas clic ni abras adjuntos","No respondas","Repórtalo por los canales oficiales y bórralo","Si ya diste tu contraseña, dilo en el reporte"]},
+{i:"🔐",c:"#C2255C",n:"Ransomware",r:"Riesgo alto",d:"Bloquea tus archivos y exige un pago para devolverlos.",
+ s:["Los archivos no abren o tienen extensiones extrañas","Aparece una nota de rescate en pantalla","Cambia el fondo de pantalla sin que lo hayas hecho"],
+ a:["Desconecta el equipo de la red ya","No pagues ni borres nada","Reporta por un canal oficial, desde otro dispositivo"]},
+{i:"🦠",c:"#7048E8",n:"Virus y gusanos",r:"Riesgo alto",d:"Se copian solos y se propagan por archivos, memorias USB o la red.",
+ s:["El equipo se vuelve muy lento de pronto","Archivos que desaparecen o se duplican","Programas que se abren solos"],
+ a:["Desconéctalo de la red y retira las memorias USB","No copies archivos a otros equipos","Repórtalo por los canales oficiales"]},
+{i:"🐴",c:"#1C7ED6",n:"Troyanos",r:"Riesgo alto",d:"Parecen un programa útil (convertidor, juego, actualización) pero abren la puerta a un atacante.",
+ s:["Aparecen programas que no instalaste","El antivirus se apaga solo","Mucho uso de internet sin motivo"],
+ a:["Si lo instalaste hace poco, desconecta y repórtalo","Desinstalar el programa no basta: pide una revisión","En adelante, instala solo lo autorizado"]},
+{i:"🕵️",c:"#0CA678",n:"Spyware y keyloggers",r:"Riesgo medio",d:"Espían lo que escribes y ves, y roban contraseñas.",
+ s:["Inicios de sesión que no reconoces","Contraseñas que dejan de funcionar","Extensiones del navegador desconocidas","Cámara o micrófono activos sin motivo"],
+ a:["Cambia tus contraseñas desde otro dispositivo","Activa la verificación en dos pasos","Repórtalo por los canales oficiales"]},
+{i:"🚨",c:"#E67700",n:"Falso soporte y adware",r:"Riesgo medio",d:"Ventanas que dicen «tienes 7 virus, llama ya» o llenan tu navegador de anuncios.",
+ s:["Ventanas emergentes que no se cierran","El navegador te lleva a páginas que no pediste","Aparecen barras o buscadores nuevos"],
+ a:["Cierra el navegador; si no cierra, usa Ctrl + Alt + Supr y el Administrador de tareas","No llames ni instales nada que te pidan","Repórtalo por los canales oficiales"]},
+{i:"📞",c:"#AE3EC9",n:"Vishing y smishing (llamadas y SMS)",r:"Riesgo alto",d:"Llamadas o mensajes de texto que fingen ser el banco, una paquetería o «el área de sistemas».",
+ s:["Prisa y presión para actuar ya","Te piden códigos, contraseñas o instalar una aplicación","Enlaces cortos o números desconocidos"],
+ a:["Cuelga y llama tú al número oficial","No compartas códigos que te lleguen por SMS","Reporta el intento por los canales oficiales"]}
+];
+var SENALES=["El equipo se puso lento de repente","Salen ventanas emergentes o anuncios todo el tiempo","Hay programas que no instalaste","El antivirus se desactivó solo","Algunos archivos no abren o cambiaron de nombre","Apareció un mensaje que pide dinero","Tus contraseñas dejaron de funcionar","Amigos o compañeros reciben mensajes que tú no enviaste"];
+var CASOS=[
+{donde:"Correo",de:"soporte@micr0soft-seguridad.com",asunto:"Tu cuenta será suspendida hoy",t:"Verifica tu contraseña en las próximas 2 horas o perderás el acceso. Haz clic aquí para confirmar.",sosp:true,
+ why:"Mete prisa, pide tu contraseña y el dominio usa un cero en lugar de la «o». Repórtalo por los canales oficiales y bórralo."},
+{donde:"Chat oficial de la empresa",de:"Equipo de TI",asunto:"Mantenimiento programado",t:"El sábado de 8:00 a 10:00 el correo estará en mantenimiento. No necesitas hacer nada.",sosp:false,
+ why:"Llega por el canal oficial, no pide datos ni trae enlaces. Si algo te hace ruido, confirma por un canal oficial."},
+{donde:"Correo",de:"Proveedor desconocido",asunto:"Factura pendiente",t:"Adjunto la factura Factura_0934.zip. Ábrela para ver tu pago pendiente.",sosp:true,
+ why:"Un .zip de alguien que no conoces es la forma clásica de colar ransomware o troyanos. No lo abras y repórtalo."},
+{donde:"Correo, justo después de que tú intentaste iniciar sesión",de:"Servicio oficial de tu cuenta",asunto:"Tu código de verificación",t:"Tu código es 482 913. Si no fuiste tú, ignora este mensaje.",sosp:false,
+ why:"Lo pediste tú hace un momento y no trae enlaces. Si te llega sin haberlo pedido, repórtalo."},
+{donde:"Ventana del navegador",de:"",asunto:"",t:"¡ALERTA! Tu equipo tiene 7 virus. Llama al 800 000 0000 ahora o perderás tus datos.",sosp:true,
+ why:"Es falso soporte. Ningún sitio web puede saber si tu equipo tiene virus. Cierra el navegador y repórtalo."}
 ];
 
-const total = slides.length + 1; // +1 resumen
-let current = 0;
-
-const host = document.getElementById('slideHost');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const fill = document.getElementById('progressFill');
-const stepLabel = document.getElementById('stepLabel');
-const dotsEl = document.getElementById('dots');
-
-for (let i = 0; i < total; i++) {
-  const d = document.createElement('div');
-  d.className = 'dot';
-  d.addEventListener('click', () => { current = i; render(); });
-  dotsEl.appendChild(d);
-}
-
-function slideHTML(s, i) {
-  return `
-    <div class="slide-card">
-      <div class="slide-num">${i + 1}</div>
-      <h2 class="slide-title">${s.title}</h2>
-      <p class="slide-sub">${s.sub}</p>
-      <div class="box box-do">
-        <p class="box-label">${checkIcon} Haz esto</p>
-        <p class="box-text">${s.doTxt}</p>
-        ${s.example ? `<span class="example">${s.example}</span>` : ''}
-      </div>
-      <div class="box box-dont">
-        <p class="box-label">${crossIcon} Evita esto</p>
-        <p class="box-text">${s.dontTxt}</p>
-        ${s.dontExample ? `<span class="example">${s.dontExample}</span>` : ''}
-      </div>
-    </div>`;
-}
-
-function summaryHTML() {
-  const okIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1f7a45" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg>';
-  const items = [
-    "Contraseña nunca a la vista ni compartida",
-    "PC bloqueada cada vez que te alejas",
-    "Adjuntos y enlaces: verificar antes de abrir",
-    "Cero programas ni USB sin autorización",
-    "Ante cualquier duda, avisar a TI de inmediato"
-  ];
-  return `
-    <div class="slide-card">
-      <div class="slide-num">&#10003;</div>
-      <h2 class="slide-title">Resumen rápido</h2>
-      <p class="slide-sub">Lo esencial para proteger tu PC, tu cuenta y la información de la empresa.</p>
-      ${items.map(t => `<div class="summary-item">${okIcon}<span>${t}</span></div>`).join('')}
-      <div class="report-box"><strong>¿Algo raro en un correo, un enlace o tu PC?</strong> No lo abras ni sigas adelante: repórtalo a TI de inmediato. Nadie se mete en problemas por avisar a tiempo.</div>
-    </div>`;
-}
-
-function render() {
-  host.innerHTML = current < slides.length ? slideHTML(slides[current], current) : summaryHTML();
-  fill.style.width = Math.round(((current + 1) / total) * 100) + '%';
-  stepLabel.textContent = current < slides.length ? `Paso ${current + 1} de ${slides.length}` : 'Resumen final';
-  prevBtn.disabled = current === 0;
-  nextBtn.textContent = current === total - 1 ? 'Volver al inicio' : 'Siguiente';
-  [...dotsEl.children].forEach((d, i) => d.classList.toggle('active', i === current));
-}
-
-prevBtn.addEventListener('click', () => { if (current > 0) { current--; render(); } });
-nextBtn.addEventListener('click', () => { current = current === total - 1 ? 0 : current + 1; render(); });
-
-let touchX = null;
-document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
-document.addEventListener('touchend', e => {
-  if (touchX === null) return;
-  const dx = e.changedTouches[0].clientX - touchX;
-  if (Math.abs(dx) > 60) {
-    if (dx < 0 && current < total - 1) { current++; render(); }
-    if (dx > 0 && current > 0) { current--; render(); }
-  }
-  touchX = null;
-}, { passive: true });
-
-render();
-
-const closeBtn = document.getElementById('closeBtn');
-const closeToast = document.getElementById('closeToast');
-closeBtn.addEventListener('click', () => {
-  window.close();
-  setTimeout(() => {
-    closeToast.classList.add('show');
-    setTimeout(() => closeToast.classList.remove('show'), 3000);
-  }, 200);
+var box=document.getElementById("lista-tipos");
+TIPOS.forEach(function(x,k){
+  var d=document.createElement("details");d.style.setProperty("--c",x.c);if(k===0)d.open=true;
+  d.innerHTML='<summary><span class="ico" aria-hidden="true">'+x.i+'</span><span><h3>'+x.n+'<span class="risk">'+x.r+'</span></h3><span class="d">'+x.d+'</span></span></summary>'+
+  '<div class="cols"><div><h4>Cómo lo notas</h4><ul>'+x.s.map(function(t){return"<li>"+t+"</li>"}).join("")+'</ul></div>'+
+  '<div><h4>Qué hacer</h4><ul>'+x.a.map(function(t){return"<li>"+t+"</li>"}).join("")+'</ul></div></div>';
+  box.appendChild(d);
 });
 
-fetch('https://api.counterapi.dev/v1/comunicados-seguridad-empresa/ciberseguridad-pc-guia/up').catch(() => {});
+var sl=document.getElementById("senales-lista"),ver=document.getElementById("veredicto");
+SENALES.forEach(function(s,i){sl.insertAdjacentHTML("beforeend",'<label><input type="checkbox"><span>'+s+'</span></label>')});
+sl.addEventListener("change",function(){
+  var n=sl.querySelectorAll("input:checked").length;
+  ver.className=n>=2?"act":"";
+  ver.textContent=n===0?"Marca lo que hayas notado.":n===1?"Una señal sola puede tener otra causa, pero repórtala por si acaso.":"Es momento de actuar: sigue los tres pasos de arriba y repórtalo por los canales oficiales.";
+});
+
+var q=document.getElementById("quiz-box"),idx=0,score=0;
+function dots(){var h='<div class="dots" aria-hidden="true">';for(var i=0;i<CASOS.length;i++)h+='<i class="'+(i<=idx?'on':'')+'"></i>';return h+'</div>'}
+function pinta(){
+  if(idx>=CASOS.length){
+    q.innerHTML='<div class="end"><p class="prog">Tu resultado</p><div class="big">'+score+' / '+CASOS.length+'</div><p>'+(score===CASOS.length?"¡Perfecto! Ya sabes en qué fijarte.":"Repasa las amenazas de arriba y vuelve a intentarlo.")+'</p><div class="btns" style="justify-content:center;margin-top:1rem"><button class="b-next" id="otra">Intentar de nuevo</button></div></div>';
+    document.getElementById("otra").onclick=function(){idx=0;score=0;pinta()};return;
+  }
+  var c=CASOS[idx],meta='<b>Dónde:</b> '+c.donde+(c.de?' &nbsp;|&nbsp; <b>De:</b> '+c.de:'')+(c.asunto?'<br><b>Asunto:</b> '+c.asunto:'');
+  q.innerHTML=dots()+'<p class="prog">Caso '+(idx+1)+' de '+CASOS.length+'</p><div class="msg"><div class="meta">'+meta+'</div><div class="body">'+c.t+'</div></div>'+
+  '<div class="btns"><button class="b-bad" id="b1">🚩 Es sospechoso</button><button class="b-good" id="b2">✅ Parece legítimo</button></div><div id="fb" role="status" aria-live="polite"></div>';
+  document.getElementById("b1").onclick=function(){resp(true)};
+  document.getElementById("b2").onclick=function(){resp(false)};
+}
+function resp(v){
+  var c=CASOS[idx],ok=v===c.sosp;if(ok)score++;
+  document.getElementById("b1").disabled=true;document.getElementById("b2").disabled=true;
+  document.getElementById("fb").innerHTML='<div class="fb '+(ok?'ok':'ko')+'"><strong>'+(ok?'¡Correcto!':'Esta no era.')+' Es '+(c.sosp?'sospechoso.':'legítimo.')+'</strong><p>'+c.why+'</p></div><div class="btns" style="margin-top:.9rem"><button class="b-next" id="sig">'+(idx===CASOS.length-1?'Ver resultado':'Siguiente caso')+'</button></div>';
+  var s=document.getElementById("sig");s.focus();s.onclick=function(){idx++;pinta()};
+}
+pinta();
 </script>
 </body>
 </html>
